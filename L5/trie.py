@@ -22,6 +22,8 @@ class TrieNode:
         # Check if the node exists for the 
         # current character in the Trie
             index = ord(c) - ord('a')
+            if index < 0 or index > 25:
+                index = 26
             if curr.children[index] is None:
 
             # If node for current character does 
