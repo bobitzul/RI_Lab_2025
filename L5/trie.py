@@ -5,7 +5,7 @@ class TrieNode:
     def __init__(self):
       
         # Array for children nodes of each node
-        self.children = [None] * 27
+        self.children = [None] * 256
         
         # for end of word
         self.isEndOfWord = False
@@ -21,9 +21,7 @@ class TrieNode:
 
         # Check if the node exists for the 
         # current character in the Trie
-            index = ord(c) - ord('a')
-            if index < 0 or index > 25:
-                index = 26
+            index = ord(c)
             if curr.children[index] is None:
 
             # If node for current character does 
@@ -52,7 +50,7 @@ class TrieNode:
 
         # Check if the node exists for the 
         # current character in the Trie
-            index = ord(c) - ord('a')
+            index = ord(c)
             if curr.children[index] is None:
                 return False
 
@@ -69,4 +67,6 @@ class TrieNode:
         if nav is None:
             return None
         else:
-            return nav.children(code)
+            c = ord(code)
+            if nav.children[c] is not None:
+                return nav.children[c]

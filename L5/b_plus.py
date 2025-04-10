@@ -1,5 +1,6 @@
 # B+ tree in python
 import math
+import os
 
 # Node creation
 class Node:
@@ -174,3 +175,10 @@ class BplusTree:
                     leaf = x
                     flag = 1
 
+#calculate hash string
+    def hash_str(s, N, R):
+        name_without_extension = os.path.splitext(s)[0]
+        hash_value = 0
+        for char in name_without_extension:
+            hash_value = (R * hash_value + ord(char)) % N
+        return hash_value
