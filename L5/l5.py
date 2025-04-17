@@ -2,6 +2,7 @@ from trie import *
 from b_plus import *
 from porter_stemmer import *
 from pathlib import Path
+import string
 import os
 
 def app_direct_quant_index(exc, noise, folder):
@@ -29,27 +30,33 @@ def app_direct_quant_index(exc, noise, folder):
                 c = 0
                 while g.tell() != None:
                     wrd = ''
-                    while g.read(1) not in '.,/\;:\n ':
+                    while g.read(1) not in (string.whitespace + '_\'.,:;[]()'):
                         g.seek(c)
-                        char = g.read(1).lower()
-                        wrd += char
-                        c += 1
+                        try:
+                            g.read(1)
+                        except:
+                            c += 1
+                        else:
+                            char = g.read(1)
+                            wrd += char
+                            c += 1
                         if stopwords.partial_search(char) is None:
                             continue
                         if exceptions.partial_search(char) is None:
                             continue
-                    print(wrd)
                     c += 1
-                    val = BplusTree.hash_str(wrd,31,19)
+                    wrd = wrd.lower()
+                    if wrd is not '':
+                        print(wrd)
                     if exceptions.search(wrd):
-                        dir_index.insert(val, key)
+                        dir_index.insert(wrd, key)
                     elif stopwords.search(wrd):
                         continue
                     else:
                         wrd = port.stem(wrd, 0, len(wrd) - 1)
-                        if dir_index.search(val):
+                        if dir_index.search(wrd):
                             k += 1
-                            dir_index.insert(val, key)
+                            dir_index.insert(wrd, key)
     dir_index.printTree()
 
 if __name__ == "__main__":

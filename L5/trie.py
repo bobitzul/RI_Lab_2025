@@ -5,7 +5,7 @@ class TrieNode:
     def __init__(self):
       
         # Array for children nodes of each node
-        self.children = [None] * 256
+        self.children = [None] * 8303
         
         # for end of word
         self.isEndOfWord = False
