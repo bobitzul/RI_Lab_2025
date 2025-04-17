@@ -30,33 +30,33 @@ def app_direct_quant_index(exc, noise, folder):
                 c = 0
                 while g.tell() != None:
                     wrd = ''
-                    while g.read(1) not in (string.whitespace + '_\'.,:;[]()'):
+                    while g.read(1) not in (string.whitespace + '_\'.,:;[]()?\\|`~<>=+/*&^%$#@!+'):
                         g.seek(c)
                         try:
                             g.read(1)
                         except:
-                            c += 1
+                            continue
                         else:
                             char = g.read(1)
                             wrd += char
-                            c += 1
+                        finally: c += 1
                         if stopwords.partial_search(char) is None:
                             continue
                         if exceptions.partial_search(char) is None:
                             continue
                     c += 1
-                    wrd = wrd.lower()
                     if wrd is not '':
+                        wrd = wrd.lower()
                         print(wrd)
-                    if exceptions.search(wrd):
-                        dir_index.insert(wrd, key)
-                    elif stopwords.search(wrd):
-                        continue
-                    else:
-                        wrd = port.stem(wrd, 0, len(wrd) - 1)
-                        if dir_index.search(wrd):
-                            k += 1
+                        if exceptions.search(wrd):
                             dir_index.insert(wrd, key)
+                        elif stopwords.search(wrd):
+                            continue
+                        else:
+                            wrd = port.stem(wrd, 0, len(wrd) - 1)
+                            if dir_index.search(wrd):
+                                k += 1
+                                dir_index.insert(wrd, key)
     dir_index.printTree()
 
 if __name__ == "__main__":
