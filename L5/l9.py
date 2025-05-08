@@ -1,6 +1,7 @@
 from trie import *
 from b_plus import *
 import queue
+import requests
 
 Q = queue.Queue(100)
 Q.put('https://www.robotstxt.org')
